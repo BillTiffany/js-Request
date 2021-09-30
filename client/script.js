@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////
 //THE TEST SERVER IS RUNNING ON LOCALHOST:3000//
 ////////////////////////////////////////////////
+const baseURL = "http://localhost:3000"
 
 // PROBLEM 1
 /*
@@ -10,7 +11,7 @@
 */
 
 // CODE HERE
-const sayHelloButton=document.querySelector("say-hello-button")
+const sayHelloButton=document.querySelector("#say-hello-button")
 
 // PROBLEM 2
 /*
@@ -21,9 +22,11 @@ const sayHelloButton=document.querySelector("say-hello-button")
 
 // CODE HERE
 
-function changeButton(){
-    
-}
+document.getElementById("say-hello-button").addEventListener("mouseover", function() {
+    document.getElementById("say-hello-button").style.backgroundColor = "black";
+    document.getElementById("say-hello-button").style.color = "white";
+
+});
 
 // PROBLEM 3
 /*
@@ -35,7 +38,11 @@ function changeButton(){
 */
 
 // CODE HERE
-
+document.getElementById("say-hello-button").addEventListener("mouseout", function() {
+    document.getElementById("say-hello-button").style.backgroundColor = "#EFEFEF";
+    document.getElementById('say-hello-button').style.color = "black";
+    document.getElementById("say-hello-button").style.border ="1px, gray, solid";
+});
 
 // PROBLEM 4
 /*
@@ -56,7 +63,7 @@ const sayHello = () => {
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-
+sayHelloButton.addEventListener("click", sayHello);
 
 // PROBLEM 5 
 /*
@@ -69,9 +76,20 @@ const sayHello = () => {
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
+
+function createP () {
+    document.createElement('p');}
 const ohMy = () => {
     // YOUR CODE HERE
+    axios.get('http://localhost:3000/animals').then((res) => {
+        for(let i=0; i < res.data.length; i++){
+            const newP = document.createElement('p');
+            newP.textContent=res.data[i]
+            document.body.appendChild(newP);
+        }
+    })
 }
+
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
 
@@ -88,10 +106,21 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
     
     We'll be updating this function in the next problem.
 */
-
+let repeatBtn = document.querySelector("#repeat-button")
 const repeatMyParam = () => {
     //YOUR CODE HERE
-}
+    axios.get(`${baseURL}/repeat/this is working, this is working`)
+    .then(res => {
+        const repeatText = document.querySelector('#repeat-text');
+        repeatText.textContent = res.data
+        repeatText.style.display = "block"
+          })
+          
+    }
+
+
+repeatBtn.addEventListener("click", repeatMyParam)
+
 
 // PROBLEM 7
 /*
@@ -115,8 +144,17 @@ const repeatMyParam = () => {
 
 // CODE HERE
 
+const queryBtn = document.querySelector("#query-button")
 
+function requestBtn (){
+    axios.get(`${baseURL}/query-test/?query=Bill&another-query=chicken`)
+    .then(res =>{
+        console.log(res.data)
+    })
 
+}
+
+queryBtn.addEventListener('click', requestBtn)
 ////////////////
 //INTERMEDIATE//
 ////////////////
@@ -134,9 +172,9 @@ const repeatMyParam = () => {
 /*
     In the function that you wrote for Problem 8, change the URL to test a couple different scenarios. 
 
-    1: Send no queries on the URL -- what happened? 
+    1: Send no queries on the URL -- what happened? You sent an empty query
 
-    2: Send more than 1 query on the URL -- what happened? 
+    2: Send more than 1 query on the URL -- what happened? You sent more than 1 query
 */
 
 // Edit code in Problem 8
@@ -167,3 +205,4 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE 
+
